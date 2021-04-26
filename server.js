@@ -1,15 +1,26 @@
 'use strict';
-alert('Welcome to my Portfolio')
+
+require('dotenv').config();
 const express = require('express');
 const server = express();
-const PORT = process.env.PORT || 1995;
+
+const PORT = process.env.PORT || 3000;
+
 server.use(express.static('./public'));
-// the server is ready for listening
-server.listen(PORT, () => {
-    console.log(`listening to ${PORT}`);
-});
-server.get('/lab5', (req, res) => {
-    res.send('try to uplode the vedio but i can not')
+
+server.get('/hello', (request, response) => {
+    response.status(200).send('Hello');
 });
 
-//  $('.container').append(`video src="video/WhatsApp Video 2021-04-17 at 6.12.53 PM (1).mp4"></video`);
+server.get('/data', (request, response) => {
+    let airplanes = {
+        departure: Date.now(),
+        canFly: true,
+        pilot: 'Well Trained',
+    };
+    response.status(200).json(airplanes);
+});
+
+server.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
+
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
